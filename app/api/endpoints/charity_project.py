@@ -8,8 +8,8 @@ from app.api.validators import (check_charity_project_exists,
                                 check_project_not_fully_invested)
 from app.core.db import get_async_session
 from app.core.user import current_superuser
-from app.models import Donation
 from app.crud.charity_project import charity_crud
+from app.models import Donation
 from app.schemas.charity_project import (CharityProjectCreate,
                                          CharityProjectDB,
                                          CharityProjectUpdate)

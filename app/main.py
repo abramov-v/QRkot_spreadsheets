@@ -10,19 +10,19 @@ app = FastAPI(title=settings.app_title)
 app.include_router(main_router)
 
 
-@app.get("/health", tags=["service"])
+@app.get('/health', tags=['service'])
 async def health():
     """health-check эндпоинт."""
-    return {"status": "ok"}
+    return {'status': 'ok'}
 
 
-@app.get("/", include_in_schema=False)
+@app.get('/', include_in_schema=False)
 async def index():
     """Редирект на Swagger."""
-    return RedirectResponse(url="/docs")
+    return RedirectResponse(url='/docs')
 
 
-@app.on_event("startup")
+@app.on_event('startup')
 async def startup():
     """Создание суперпользователя при старте приложения."""
     await create_first_superuser()

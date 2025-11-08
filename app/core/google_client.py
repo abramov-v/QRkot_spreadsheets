@@ -1,11 +1,13 @@
+from collections.abc import AsyncGenerator
+
 from aiogoogle import Aiogoogle
 from aiogoogle.auth.creds import ServiceAccountCreds
 
 from app.core.config import settings
 
 SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive",
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/drive',
 ]
 
 INFO = {
@@ -24,9 +26,7 @@ INFO = {
 cred = ServiceAccountCreds(scopes=SCOPES, **INFO)
 
 
-async def get_service():
-    """
-    Создаёт и возвращает асинхронный клиент Aiogoogle с данными аккаунта.
-    """
+async def get_service() -> AsyncGenerator[Aiogoogle, None]:
+    """Создаёт и возвращает асинхронный клиент Aiogoogle."""
     async with Aiogoogle(service_account_creds=cred) as aiogoogle:
         yield aiogoogle

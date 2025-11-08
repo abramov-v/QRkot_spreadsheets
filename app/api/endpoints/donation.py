@@ -15,13 +15,13 @@ router = APIRouter()
     '/',
     response_model=list[DonationAdminOut],
     response_model_exclude_none=True,
-    dependencies=[Depends(current_superuser)]
+    dependencies=[Depends(current_superuser)],
+    summary='Получить все пожертвования',
 )
 async def get_all_donations(
     session: AsyncSession = Depends(get_async_session),
 ):
     """Получить список всех пожертвований (только для суперпользователей)."""
-
     return await donation_crud.get_multi(session)
 
 
@@ -29,6 +29,7 @@ async def get_all_donations(
     '/',
     response_model=DonationUserOut,
     response_model_exclude_none=True,
+    summary='Создать пожертвование',
 )
 async def create_donation(
     obj_in: DonationCreate,
@@ -36,7 +37,6 @@ async def create_donation(
     session: AsyncSession = Depends(get_async_session),
 ):
     """Создать новое пожертвование (для авторизованных пользователей)."""
-
     new_donation = await donation_crud.create(obj_in, session, user)
     await donation_crud.invest_new_donation(new_donation, session)
     return new_donation
@@ -46,11 +46,11 @@ async def create_donation(
     '/my',
     response_model=list[DonationUserOut],
     response_model_exclude_none=True,
+    summary='Получить пожертвования текущего пользователя',
 )
 async def get_user_donations(
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(current_user),
 ):
     """Получить список пожертвований текущего пользователя."""
-
     return await donation_crud.get_user_donations(user, session)

@@ -81,25 +81,25 @@ cp .env.example .env
 
 ```env
 # Настройки приложения
-APP_TITLE=Благотворительный фонд поддержки котиков - QRKot
-APP_DESC=Приложение для управления благотворительными проектами
-DATABASE_URL=sqlite+aiosqlite:///./fastapi.db
-SECRET_KEY=your_super_secret_key_here
-FIRST_SUPERUSER_EMAIL=admin@example.com
-FIRST_SUPERUSER_PASSWORD=your_strong_password_here
+QRKOT_APP_TITLE=Благотворительный фонд поддержки котиков - QRKot
+QRKOT_APP_DESC=Приложение для управления благотворительными проектами
+QRKOT_DATABASE_URL=sqlite+aiosqlite:///./fastapi.db
+QRKOT_SECRET=your_super_secret_key_here
+QRKOT_FIRST_SUPERUSER_EMAIL=admin@example.com
+QRKOT_FIRST_SUPERUSER_PASSWORD=your_strong_password_here
 
 # Настройки Google cloud сервиса
-TYPE=Укажите_тип_из_JSON_файла_сервисного_аккаунта
-PROJECT_ID=Укажите_ID_вашего_проекта_в_Google_Cloud
-PRIVATE_KEY_ID=Укажите_PRIVATE_KEY_ID_из_JSON
-PRIVATE_KEY=Укажите_PRIVATE_KEY_из_JSON
-CLIENT_EMAIL=Укажите_CLIENT_EMAIL_из_JSON
-CLIENT_ID=Укажите_CLIENT_ID_из_JSON
-AUTH_URI=Укажите_AUTH_URI_из_JSON
-TOKEN_URI=Укажите_TOKEN_URI_из_JSON
-AUTH_PROVIDER_X509_CERT_URL=Укажите_AUTH_PROVIDER_X509_CERT_URL_из_JSON
-CLIENT_X509_CERT_URL=Укажите_CLIENT_X509_CERT_URL_из_JSON
-EMAIL=Укажите_ваш_личный_или_проектный_email
+QRKOT_TYPE=Укажите_тип_из_JSON_файла_сервисного_аккаунта
+QRKOT_PROJECT_ID=Укажите_ID_вашего_проекта_в_Google_Cloud
+QRKOT_PRIVATE_KEY_ID=Укажите_PRIVATE_KEY_ID_из_JSON
+QRKOT_PRIVATE_KEY=Укажите_PRIVATE_KEY_из_JSON
+QRKOT_CLIENT_EMAIL=Укажите_CLIENT_EMAIL_из_JSON
+QRKOT_CLIENT_ID=Укажите_CLIENT_ID_из_JSON
+QRKOT_AUTH_URI=Укажите_AUTH_URI_из_JSON
+QRKOT_TOKEN_URI=Укажите_TOKEN_URI_из_JSON
+QRKOT_AUTH_PROVIDER_X509_CERT_URL=Укажите_AUTH_PROVIDER_X509_CERT_URL_из_JSON
+QRKOT_CLIENT_X509_CERT_URL=Укажите_CLIENT_X509_CERT_URL_из_JSON
+QRKOT_EMAIL=Укажите_ваш_личный_или_проектный_email
 ```
 
 5. Инициализируйте базу данных и выполните миграции:

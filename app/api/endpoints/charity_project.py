@@ -19,12 +19,12 @@ router = APIRouter()
 @router.get(
     '/',
     response_model=list[CharityProjectDB],
+    summary='Получить все проекты',
 )
 async def get_all_charity_projects(
     session: AsyncSession = Depends(get_async_session),
 ):
     """Получить список всех проектов."""
-
     return await charity_crud.get_multi(session)
 
 
@@ -33,13 +33,13 @@ async def get_all_charity_projects(
     response_model=CharityProjectDB,
     response_model_exclude_none=True,
     dependencies=[Depends(current_superuser)],
+    summary='Создать проект',
 )
 async def create_charity_project(
     charity_project: CharityProjectCreate,
     session: AsyncSession = Depends(get_async_session),
 ):
     """Создать новый проект (только для суперпользователей)."""
-
     await check_charity_project_name_duplicate(charity_project.name, session)
     new_charity_project = await charity_crud.create(charity_project, session)
     await charity_crud.invest_new_project(new_charity_project, session)
@@ -51,13 +51,13 @@ async def create_charity_project(
     response_model=CharityProjectDB,
     response_model_exclude_none=True,
     dependencies=[Depends(current_superuser)],
+    summary='Удалить проект',
 )
 async def remove_charity_project(
     project_id: int,
     session: AsyncSession = Depends(get_async_session),
 ):
     """Удалить проект (если нет инвестиций, только для суперпользователей)."""
-
     project = await check_charity_project_exists(project_id, session)
     await check_project_not_fully_invested(project)
     await check_project_has_no_investments_for_delete(project)
@@ -69,6 +69,7 @@ async def remove_charity_project(
     response_model=CharityProjectDB,
     response_model_exclude_none=True,
     dependencies=[Depends(current_superuser)],
+    summary='Обновить проект',
 )
 async def partially_update_charity_project(
     project_id: int,
@@ -76,7 +77,6 @@ async def partially_update_charity_project(
     session: AsyncSession = Depends(get_async_session),
 ):
     """Частично обновить проект (только для суперпользователей)."""
-
     project = await check_charity_project_exists(project_id, session)
     await check_project_not_fully_invested(project)
 

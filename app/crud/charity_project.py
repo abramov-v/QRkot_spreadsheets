@@ -11,7 +11,6 @@ from app.services.investing import apply_transfer, is_closed
 
 class CRUDCharityProject(CRUDBase):
     """CRUD класс для проектов."""
-
     async def charity_get_by_name(
             self,
             name: str,

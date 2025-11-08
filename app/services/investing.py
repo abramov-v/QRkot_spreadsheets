@@ -5,24 +5,29 @@ from app.models.donation import Donation
 
 
 def utcnow() -> datetime:
+    """Вернуть текущее время в UTC."""
     return datetime.now(timezone.utc)
 
 
 def is_closed(obj) -> bool:
+    """Проверить, достиг ли объект полной суммы инвестиций."""
     return obj.invested_amount >= obj.full_amount
 
 
 def close_obj(obj) -> None:
+    """Закрыть объект если он полностью профинансирован."""
     if not obj.fully_invested and is_closed(obj):
         obj.fully_invested = True
         obj.close_date = utcnow()
 
 
 def free_amount(obj) -> int:
+    """Вычислить оставшуюся сумму доступную для инвестирования."""
     return max(0, obj.full_amount - obj.invested_amount)
 
 
 def apply_transfer(donation: Donation, project: CharityProject) -> int:
+    """Перераспределить средства между пожертвованием и проектом."""
     if donation.fully_invested or project.fully_invested:
         return 0
     take = min(free_amount(donation), free_amount(project))

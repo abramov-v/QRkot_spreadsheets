@@ -1,3 +1,5 @@
+from collections.abc import AsyncGenerator
+
 from sqlalchemy import Column, Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, declared_attr, sessionmaker
@@ -7,7 +9,6 @@ from app.core.config import settings
 
 class PreBase:
     """Базовый класс для моделей с автогенерацией имени таблицы."""
-
     @declared_attr
     def __tablename__(cls):
         return cls.__name__.lower()
@@ -22,6 +23,7 @@ engine = create_async_engine(settings.database_url)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession)
 
 
-async def get_async_session():
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """Создать асинхронную сессию SQLAlchemy и вернуть её через генератор."""
     async with AsyncSessionLocal() as async_session:
         yield async_session

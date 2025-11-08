@@ -11,7 +11,6 @@ async def check_charity_project_exists(
     session: AsyncSession,
 ) -> CharityProject:
     """Проверка, что проект с данным ID существует."""
-
     charity_project = await charity_crud.get(charity_project_id, session)
     if not charity_project:
         raise HTTPException(
@@ -26,7 +25,6 @@ async def check_charity_project_name_duplicate(
         session: AsyncSession,
 ) -> None:
     """Проверка, что имя проекта уникально."""
-
     charity_project = await charity_crud.charity_get_by_name(
         charity_project_name, session
     )
@@ -39,7 +37,6 @@ async def check_charity_project_name_duplicate(
 
 async def check_project_not_fully_invested(project: CharityProject) -> None:
     """Запрет на редактирование/удаление закрытых проектов."""
-
     if project.fully_invested:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -52,7 +49,6 @@ async def check_full_amount_not_less_than_invested(
     project: CharityProject,
 ) -> None:
     """Запрет на уменьшение требуемой суммы ниже уже вложенной."""
-
     if new_amount < project.invested_amount:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -64,7 +60,6 @@ async def check_project_has_no_investments_for_delete(
     project: CharityProject,
 ) -> None:
     """Запрет на удаление проекта, если в него уже внесены средства."""
-
     if project.invested_amount > MIN_INVESTED_AMOUNT:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

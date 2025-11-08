@@ -11,6 +11,7 @@ from app.core.constants import (FORMAT, PERMISSION_ROLE, PERMISSION_TYPE,
 
 
 async def create_spreadsheets(wrapper_services: Aiogoogle) -> str:
+    """Создать новую Google-таблицу для отчёта и вернуть ее id."""
     now_date_time = datetime.now().strftime(FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
 
@@ -43,6 +44,7 @@ async def set_user_permissions(
         spreadsheetid: str,
         wrapper_services: Aiogoogle
 ) -> None:
+    """Назначить пользователю права на редактирование таблицы."""
     permissions_body = {
         'type': PERMISSION_TYPE,
         'role': PERMISSION_ROLE,
@@ -64,6 +66,7 @@ async def update_spreadsheets_value(
         charity_projects: list,
         wrapper_services: Aiogoogle
 ) -> None:
+    """Заполнить таблицу данными о закрытых благотворительных проектах."""
     now_date_time = datetime.now().strftime(FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
 

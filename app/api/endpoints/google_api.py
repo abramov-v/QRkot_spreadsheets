@@ -18,6 +18,7 @@ router = APIRouter()
     response_model=list[CharityProjectDB],
     status_code=status.HTTP_201_CREATED,
     dependencies=[Depends(current_superuser)],
+    summary='Создать Google Sheets отчет',
 )
 async def get_report(
         session: AsyncSession = Depends(get_async_session),

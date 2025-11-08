@@ -9,7 +9,6 @@ from app.models import User
 
 class CRUDBase:
     """Базовый CRUD класс для моделей SQLAlchemy."""
-
     def __init__(self, model):
         self.model = model
 

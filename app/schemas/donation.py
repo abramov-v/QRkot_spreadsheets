@@ -6,7 +6,6 @@ from pydantic import BaseModel, NonNegativeInt, PositiveInt
 
 class DonationBase(BaseModel):
     """Базовая схема пожертвования."""
-
     full_amount: PositiveInt
     comment: Optional[str] = None
 
@@ -20,7 +19,6 @@ class DonationCreate(DonationBase):
 
 class DonationUserOut(DonationBase):
     """Схема пожертвования для пользователя."""
-
     id: int
     create_date: datetime
 
@@ -30,7 +28,6 @@ class DonationUserOut(DonationBase):
 
 class DonationAdminOut(DonationUserOut):
     """Схема пожертвования для администратора."""
-
     user_id: int
     invested_amount: NonNegativeInt
     fully_invested: bool

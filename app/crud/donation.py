@@ -10,7 +10,6 @@ from app.services.investing import apply_transfer, is_closed
 
 class CRUDDonation(CRUDBase):
     """CRUD класс для пожертвований."""
-
     async def get_user_donations(
             self,
             user: User,

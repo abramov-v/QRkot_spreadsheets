@@ -8,10 +8,12 @@ from app.api.validators import (check_charity_project_exists,
                                 check_project_not_fully_invested)
 from app.core.db import get_async_session
 from app.core.user import current_superuser
+from app.models import Donation
 from app.crud.charity_project import charity_crud
 from app.schemas.charity_project import (CharityProjectCreate,
                                          CharityProjectDB,
                                          CharityProjectUpdate)
+from app.services.investing import invest
 
 router = APIRouter()
 
@@ -42,7 +44,7 @@ async def create_charity_project(
     """Создать новый проект (только для суперпользователей)."""
     await check_charity_project_name_duplicate(charity_project.name, session)
     new_charity_project = await charity_crud.create(charity_project, session)
-    await charity_crud.invest_new_project(new_charity_project, session)
+    await invest(new_charity_project, Donation, session)
     return new_charity_project
 
 

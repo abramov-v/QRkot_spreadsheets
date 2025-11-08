@@ -16,12 +16,14 @@ from app.schemas.user import UserCreate
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    """Возвращает асинхронную базу данных пользователей."""
     yield SQLAlchemyUserDatabase(session, User)
 
 bearer_transport = BearerTransport(tokenUrl='auth/jwt/login')
 
 
 def get_jwt_strategy() -> JWTStrategy:
+    """Стратегия JWT-аутентификации с заданным временем жизни токена."""
     return JWTStrategy(
         secret=settings.secret,
         lifetime_seconds=JWT_LIFETIME_SECONDS
@@ -36,12 +38,13 @@ auth_backend = AuthenticationBackend(
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
-
+    """Управляет пользователями и выполняет валидацию при регистрации."""
     async def validate_password(
         self,
         password: str,
         user: Union[UserCreate, User],
     ) -> None:
+        """Проверяет пароль на минимальную длину и отсутствие e-mail в нём."""
         if len(password) < MIN_PASSWORD_LENGTH:
             raise InvalidPasswordException(
                 reason=f'Пароль должен содержать не менее '
@@ -55,10 +58,11 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     async def on_after_register(
             self, user: User, request: Optional[Request] = None
     ):
-        print(f'Пользователь {user.email} зарегистрирован.')
+        pass
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):
+    """Возвращает менеджер пользователей для FastAPI Users."""
     yield UserManager(user_db)
 
 

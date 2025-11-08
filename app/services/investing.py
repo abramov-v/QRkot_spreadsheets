@@ -1,5 +1,8 @@
 from datetime import datetime, timezone
 
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+
 from app.models.charity_project import CharityProject
 from app.models.donation import Donation
 
@@ -38,3 +41,38 @@ def apply_transfer(donation: Donation, project: CharityProject) -> int:
     close_obj(project)
     close_obj(donation)
     return take
+
+
+async def invest(
+    new_obj,
+    counterpart_model,
+    session: AsyncSession
+) -> None:
+    """Распределяет средства между новым объектом и записями второй модели."""
+    if new_obj.fully_invested:
+        return
+
+    result = await session.execute(
+        select(counterpart_model)
+        .where(counterpart_model.fully_invested.is_(False))
+        .order_by(
+            counterpart_model.create_date.asc(),
+            counterpart_model.id.asc(),
+        )
+    )
+    counterparts = result.scalars().all()
+
+    for counterpart in counterparts:
+        if is_closed(new_obj):
+            break
+
+        if counterpart_model is CharityProject:
+            apply_transfer(new_obj, counterpart)
+        else:
+            apply_transfer(counterpart, new_obj)
+
+        session.add(counterpart)
+
+    session.add(new_obj)
+    await session.commit()
+    await session.refresh(new_obj)

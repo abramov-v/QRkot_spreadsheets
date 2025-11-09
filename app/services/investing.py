@@ -1,10 +1,10 @@
 from datetime import datetime, timezone
+from typing import Type
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.charity_project import CharityProject
-from app.models.donation import Donation
+from app.models.abstract import AbstractCharityDonation
 
 
 def utcnow() -> datetime:
@@ -29,24 +29,30 @@ def free_amount(obj) -> int:
     return max(0, obj.full_amount - obj.invested_amount)
 
 
-def apply_transfer(donation: Donation, project: CharityProject) -> int:
-    """Перераспределить средства между пожертвованием и проектом."""
-    if donation.fully_invested or project.fully_invested:
+def apply_transfer(
+        object_1: AbstractCharityDonation,
+        object_2: AbstractCharityDonation,
+) -> int:
+    """Переводит средства между двумя объектами.
+
+    Закрывает заполненные и возвращает объем перевода.
+    """
+    if object_1.fully_invested or object_2.fully_invested:
         return 0
-    take = min(free_amount(donation), free_amount(project))
+    take = min(free_amount(object_1), free_amount(object_2))
     if take <= 0:
         return 0
-    project.invested_amount += take
-    donation.invested_amount += take
-    close_obj(project)
-    close_obj(donation)
+    object_1.invested_amount += take
+    object_2.invested_amount += take
+    close_obj(object_1)
+    close_obj(object_2)
     return take
 
 
 async def invest(
-    new_obj,
-    counterpart_model,
-    session: AsyncSession
+    new_obj: AbstractCharityDonation,
+    counterpart_model: Type[AbstractCharityDonation],
+    session: AsyncSession,
 ) -> None:
     """Распределяет средства между новым объектом и записями второй модели."""
     if new_obj.fully_invested:
@@ -65,12 +71,7 @@ async def invest(
     for counterpart in counterparts:
         if is_closed(new_obj):
             break
-
-        if counterpart_model is CharityProject:
-            apply_transfer(new_obj, counterpart)
-        else:
-            apply_transfer(counterpart, new_obj)
-
+        apply_transfer(new_obj, counterpart)
         session.add(counterpart)
 
     session.add(new_obj)

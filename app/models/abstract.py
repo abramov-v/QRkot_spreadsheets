@@ -7,6 +7,7 @@ from app.core.db import Base
 
 class AbstractCharityDonation(Base):
     """Абстрактная модель для проектов и пожертвований."""
+
     __abstract__ = True
 
     full_amount = Column(Integer, nullable=False)

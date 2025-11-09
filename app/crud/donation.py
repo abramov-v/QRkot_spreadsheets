@@ -8,6 +8,7 @@ from app.models.user import User
 
 class CRUDDonation(CRUDBase):
     """CRUD класс для пожертвований."""
+
     async def get_user_donations(
             self,
             user: User,

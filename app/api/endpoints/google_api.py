@@ -24,10 +24,7 @@ async def get_report(
         session: AsyncSession = Depends(get_async_session),
         wrapper_services: Aiogoogle = Depends(get_service)
 ):
-    """
-    Создаёт отчёт в Google Sheets и возвращает отсортированный
-    список закрытых проектов.
-    """
+    """Создаёт отчёт в Google Sheets и возвращает список закрытых проектов."""
     charity_projects = await charity_crud.get_projects_by_completion_rate(
         session
     )

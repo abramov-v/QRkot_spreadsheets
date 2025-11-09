@@ -9,6 +9,7 @@ from app.core.config import settings
 
 class PreBase:
     """Базовый класс для моделей с автогенерацией имени таблицы."""
+
     @declared_attr
     def __tablename__(cls):
         return cls.__name__.lower()

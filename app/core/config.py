@@ -5,6 +5,7 @@ from pydantic import BaseSettings, EmailStr
 
 class Settings(BaseSettings):
     """Настройки приложения, загружаемые из .env файла."""
+
     app_title: str = 'QRKot'
     app_desc: str = 'Фонд поддержки котиков'
     database_url: str = 'sqlite+aiosqlite:///./fastapi.db'

@@ -9,6 +9,7 @@ from app.models.charity_project import CharityProject
 
 class CRUDCharityProject(CRUDBase):
     """CRUD класс для проектов."""
+
     async def charity_get_by_name(
             self,
             name: str,
